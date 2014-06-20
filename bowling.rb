@@ -15,6 +15,8 @@ class Bowling
       q.subscribe(:block => true) do |delivery_info, properties, body|
         @var = body
         puts " [x] Received #{body}"
+        conn.close
+        exit(0)
       end
     rescue Interrupt => _
       conn.close
