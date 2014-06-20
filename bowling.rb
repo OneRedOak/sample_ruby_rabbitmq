@@ -1,7 +1,7 @@
 require 'bunny'
 
 class Bowling
-  @var = ""
+  @var = "pre"
 
   def hit()
     conn = Bunny.new(:automatically_recover => false)
@@ -11,12 +11,16 @@ class Bowling
     q    = ch.queue("hello")
 
     begin
+      ch.default_exchange.publish("Hello World!", :routing_key => q.name)
+      puts " [x] Sent 'Hello World!'"
+
       puts " [*] Waiting for messages. To exit press CTRL+C"
       q.subscribe(:block => true) do |delivery_info, properties, body|
         @var = body
         puts " [x] Received #{body}"
-        conn.close
-        exit(0)
+        #conn.close
+
+        #exit(0)
       end
     rescue Interrupt => _
       conn.close
