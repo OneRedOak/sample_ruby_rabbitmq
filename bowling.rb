@@ -1,18 +1,26 @@
-require 'couchrest'
+require 'bunny'
 
 class Bowling
-  @var = 0
+  @var = ""
 
   def hit()
-    @db = CouchRest.database!("http://127.0.0.1:5984/test")
+    conn = Bunny.new(:automatically_recover => false)
+    conn.start
 
-    response = @db.save_doc({
-        :key => 1234,
-        :title => "Bowling Score",
-        :content => "Strike"
-    })
+    ch   = conn.create_channel
+    q    = ch.queue("hello")
 
-    @var = @db.get(response['id'])['key']
+    begin
+      puts " [*] Waiting for messages. To exit press CTRL+C"
+      q.subscribe(:block => true) do |delivery_info, properties, body|
+        @var = body
+        puts " [x] Received #{body}"
+      end
+    rescue Interrupt => _
+      conn.close
+
+      exit(0)
+    end
   end
 
   def score

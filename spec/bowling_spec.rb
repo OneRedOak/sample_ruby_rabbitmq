@@ -5,6 +5,6 @@ describe Bowling, "#score" do
   it "returns 0 for all gutter game" do
     bowling = Bowling.new
     bowling.hit
-    bowling.score.should eq(1234)
+    bowling.score.should eq("hello")
   end
 end

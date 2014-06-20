@@ -1,4 +1,4 @@
-Ruby CouchDB Sample
+Ruby RabbitMQ Sample
 =====================
 
-Uses RSpec and SimpleCov to test simple document insertion on a CouchDB instance.
+Uses bunny to send and recieve a message through RabbitMQ.
