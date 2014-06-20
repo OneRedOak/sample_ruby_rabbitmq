@@ -13,24 +13,21 @@ class Bowling
     begin
       ch.default_exchange.publish("Hello World!", :routing_key => q.name)
       puts " [x] Sent 'Hello World!'"
-
       puts " [*] Waiting for messages. To exit press CTRL+C"
-      q.subscribe(:block => true) do |delivery_info, properties, body|
+      consumer = q.subscribe(:block => true) do |delivery_info, properties, body|
         @var = body
+        consumer.cancel
         puts " [x] Received #{body}"
-        #conn.close
-
-        #exit(0)
       end
     rescue Interrupt => _
       conn.close
 
       exit(0)
     end
+    puts "--------444444---------"
   end
 
   def score
   	return @var
   end
 end
-
