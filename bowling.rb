@@ -16,8 +16,8 @@ class Bowling
       puts " [*] Waiting for messages. To exit press CTRL+C"
       consumer = q.subscribe(:block => true) do |delivery_info, properties, body|
         @var = body
-        consumer.cancel
         puts " [x] Received #{body}"
+        ch.close
       end
     rescue Interrupt => _
       conn.close
